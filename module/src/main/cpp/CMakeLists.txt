@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.5)
 
 if (NOT DEFINED MODULE_NAME)
     message(FATAL_ERROR "MODULE_NAME is not set")
@@ -30,10 +30,15 @@ set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LINKER_FLAGS}")
 
 # find_package(REQUIRED CONFIG)
 
-include_directories(include)
+include_directories(include ${CMAKE_SOURCE_DIR}/Dobby/include)
 
 add_library(${MODULE_NAME} SHARED example.cpp zygisk.hpp)
-target_link_libraries(${MODULE_NAME}  log)
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/Dobby dobby.out)
+add_subdirectory(${CMAKE_SOURCE_DIR}/whale whale.out)
+target_link_libraries(${MODULE_NAME} dobby_static whale_static)
+
+target_link_libraries(${MODULE_NAME} android log)
 
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_custom_command(TARGET ${MODULE_NAME} POST_BUILD

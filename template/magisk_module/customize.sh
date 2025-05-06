@@ -64,12 +64,13 @@ ui_print "- Extracting zygisk libraries"
 if [ "$FLAVOR" == "zygisk" ]; then
   mkdir -p "$MODPATH/zygisk"
   if [ "$ARCH" = "arm" ] || [ "$ARCH" = "arm64" ]; then
-    extract "$ZIPFILE" "lib/armeabi-v7a/libtest.so" "$MODPATH/zygisk" true
-    mv "$MODPATH/zygisk/libtest.so" "$MODPATH/zygisk/armeabi-v7a.so"
 
     if [ "$IS64BIT" = true ]; then
       extract "$ZIPFILE" "lib/arm64-v8a/libtest.so" "$MODPATH/zygisk" true
       mv "$MODPATH/zygisk/libtest.so" "$MODPATH/zygisk/arm64-v8a.so"
+    else
+      extract "$ZIPFILE" "lib/armeabi-v7a/libtest.so" "$MODPATH/zygisk" true
+      mv "$MODPATH/zygisk/libtest.so" "$MODPATH/zygisk/armeabi-v7a.so"
     fi
   fi
 
